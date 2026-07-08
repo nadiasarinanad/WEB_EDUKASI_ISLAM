@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin | Ruang Jemaah</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f0f2f5;
+        }
+        .sidebar {
+            background: #1e3d1a;
+            min-height: 100vh;
+            color: white;
+            transition: all 0.3s;
+        }
+        .sidebar a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: block;
+            padding: 12px 20px;
+            margin: 5px 0;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+        .sidebar a:hover, .sidebar a.active {
+            background: #2d5a27;
+            color: white;
+            transform: translateX(5px);
+        }
+        .sidebar i {
+            width: 30px;
+        }
+        .top-nav {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+        .card-stats {
+            border: none;
+            border-radius: 20px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .card-stats:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .table-custom {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .table-custom th {
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            font-weight: 600;
+        }
+        .btn-action {
+            border-radius: 50px;
+            padding: 5px 15px;
+            font-size: 0.8rem;
+            margin: 0 3px;
+        }
+        .btn-add {
+            background: linear-gradient(135deg, #1e3d1a 0%, #3e8035 100%);
+            border: none;
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 500;
+        }
+        .btn-add:hover {
+            transform: scale(1.02);
+        }
+        .footer-admin {
+            background: white;
+            border-radius: 20px;
+            padding: 15px;
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar p-3">
+                <div class="text-center mb-4 mt-3">
+                    <i class="fas fa-mosque fa-3x mb-2"></i>
+                    <h5 class="fw-bold">Ruang Jemaah</h5>
+                    <p class="small opacity-75">Admin Panel</p>
+                </div>
+                <hr class="bg-light">
+                <a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="#artikel-section" onclick="smoothScroll('artikel-section')"><i class="fas fa-newspaper"></i> Kelola Artikel</a>
+                <a href="#ustadz-section" onclick="smoothScroll('ustadz-section')"><i class="fas fa-chalkboard-teacher"></i> Kelola Ustadz</a>
+                <a href="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-10 p-4">
+                <div class="top-nav d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="fw-bold mb-0">Selamat datang, Admin!</h4>
+                        <small class="text-muted">Kelola konten edukasi Islam dan ustadz</small>
+                    </div>
+                    <div>
+                        <span class="badge bg-success rounded-pill"><i class="fas fa-calendar-alt me-1"></i> {{ now if now else "Hari ini" }}</span>
+                    </div>
+                </div>
+
+                <!-- Statistik Cards (Opsional) -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card card-stats bg-white p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-muted">Total Artikel</h6>
+                                    <h2 class="fw-bold text-success">{{ artikel|length }}</h2>
+                                </div>
+                                <i class="fas fa-newspaper fa-2x text-success opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-stats bg-white p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-muted">Total Ustadz</h6>
+                                    <h2 class="fw-bold text-success">{{ ustadz|length }}</h2>
+                                </div>
+                                <i class="fas fa-user-graduate fa-2x text-success opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-stats bg-white p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-muted">Kategori</h6>
+                                    <h2 class="fw-bold text-success">3</h2>
+                                </div>
+                                <i class="fas fa-tags fa-2x text-success opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daftar Artikel -->
+                <div id="artikel-section" class="mt-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold"><i class="fas fa-newspaper text-success me-2"></i> Daftar Artikel</h5>
+                        <a href="/admin/artikel/tambah" class="btn btn-add text-white"><i class="fas fa-plus me-1"></i> Tambah Artikel</a>
+                    </div>
+                    <div class="table-responsive table-custom">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>ID</th><th>Judul Artikel</th><th>Kategori</th><th>Sumber</th><th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for a in artikel %}
+                                <tr>
+                                    <td>{{ a.id_artikel }}</td>
+                                    <td><strong>{{ a.judul_artikel }}</strong></td>
+                                    <td>
+                                        {% if a.id_kategori == 1 %}
+                                            <span class="badge bg-warning text-dark">Fikih</span>
+                                        {% elif a.id_kategori == 2 %}
+                                            <span class="badge bg-info">Akidah Akhlak</span>
+                                        {% elif a.id_kategori == 3 %}
+                                            <span class="badge bg-secondary">SKI</span>
+                                        {% else %}
+                                            {{ a.id_kategori }}
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ a.sumber }}</td>
+                                    <td>
+                                        <a href="/admin/artikel/edit/{{ a.id_artikel }}" class="btn btn-sm btn-warning btn-action"><i class="fas fa-edit me-1"></i>Edit</a>
+                                        <a href="/admin/artikel/hapus/{{ a.id_artikel }}" class="btn btn-sm btn-danger btn-action" onclick="return confirm('Yakin hapus artikel {{ a.judul_artikel }}?')"><i class="fas fa-trash me-1"></i>Hapus</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Daftar Ustadz -->
+                <div id="ustadz-section" class="mt-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold"><i class="fas fa-chalkboard-teacher text-success me-2"></i> Daftar Ustadz</h5>
+                        <a href="/admin/ustadz/tambah" class="btn btn-add text-white"><i class="fas fa-plus me-1"></i> Tambah Ustadz</a>
+                    </div>
+                    <div class="table-responsive table-custom">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr><th>ID</th><th>Nama Ustadz</th><th>Spesialisasi</th><th>Email</th><th>Aksi</th></tr>
+                            </thead>
+                            <tbody>
+                                {% for u in ustadz %}
+                                <tr>
+                                    <td>{{ u.id_ustadz }}</td>
+                                    <td><i class="fas fa-user-circle text-success me-2"></i><strong>{{ u.nama_ustadz }}</strong></td>
+                                    <td>{{ u.spesialisasi }}</td>
+                                    <td>{{ u.email if u.email else '<span class="text-muted">-</span>'|safe }}</td>
+                                    <td>
+                                        <a href="/admin/ustadz/hapus/{{ u.id_ustadz }}" class="btn btn-sm btn-danger btn-action" onclick="return confirm('Hapus ustadz {{ u.nama_ustadz }}?')"><i class="fas fa-trash me-1"></i>Hapus</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="footer-admin">
+                    <i class="fas fa-mosque me-1 text-success"></i> Ruang Jemaah Admin Panel &copy; 2026 | Versi 1.0
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function smoothScroll(target) {
+            document.getElementById(target.substring(1)).scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

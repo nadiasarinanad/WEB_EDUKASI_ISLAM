@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konsultasi dengan Ustadz | Ruang Jemaah</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(145deg, #f6faf6 0%, #eef5ea 100%);
+            font-family: 'Poppins', sans-serif;
+        }
+        /* Navbar Premium */
+        .navbar-premium {
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.03);
+            padding: 1rem 0;
+        }
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.6rem;
+            background: linear-gradient(135deg, #1e3d1a, #3e8035);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        /* Hero Section */
+        .hero-ustadz {
+            background: linear-gradient(120deg, #1e3d1a 0%, #2b5e2a 100%);
+            border-radius: 0 0 50px 50px;
+            padding: 3rem 1rem 4rem 1rem;
+            color: white;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-ustadz::before {
+            content: "✿";
+            font-size: 18rem;
+            position: absolute;
+            bottom: -40px;
+            right: -40px;
+            opacity: 0.08;
+            font-family: monospace;
+        }
+        /* Card Ustadz Modern */
+        .ustadz-card {
+            background: white;
+            border-radius: 32px;
+            transition: all 0.35s ease;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            border: 1px solid rgba(50, 100, 40, 0.12);
+            height: 100%;
+            position: relative;
+            backdrop-filter: blur(2px);
+        }
+        .ustadz-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 30px 45px rgba(30,61,26,0.15);
+            border-color: #c0e0b0;
+        }
+        .card-img-top {
+            height: 260px;
+            object-fit: cover;
+            background: #dcebd8;
+            transition: transform 0.5s;
+        }
+        .ustadz-card:hover .card-img-top {
+            transform: scale(1.02);
+        }
+        .badge-spesialis {
+            background: #eaf8e6;
+            color: #1e4a1e;
+            border-radius: 60px;
+            padding: 6px 14px;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+        .btn-konsultasi {
+            background: linear-gradient(95deg, #1e3d1a, #3a8035);
+            border: none;
+            border-radius: 50px;
+            padding: 10px 0;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn-konsultasi:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(30,61,26,0.3);
+            background: linear-gradient(95deg, #2b5527, #4a9e42);
+        }
+        footer {
+            background: #0e2a0e;
+            color: #bdd8b5;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar premium -->
+    <nav class="navbar navbar-expand-lg navbar-premium sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/beranda"><i class="fas fa-mosque me-2 text-success"></i>Ruang Jemaah</a>
+            <div>
+                <a href="/beranda" class="btn btn-outline-success rounded-pill px-4">← Beranda</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="hero-ustadz text-center">
+        <div class="container">
+            <h1 class="fw-bold display-5"><i class="fas fa-comments me-3"></i>Konsultasi Agama</h1>
+            <p class="lead opacity-90">Sampaikan pertanyaan Anda kepada ustadz ahli di bidangnya. Privat, nyaman, dan terpercaya.</p>
+        </div>
+    </div>
+
+    <div class="container mb-5">
+        <div class="row g-4">
+            {% for u in ustadz %}
+            <div class="col-md-6 col-lg-4">
+                <div class="ustadz-card">
+                    {% if u.foto_ustadz %}
+                    <img src="{{ u.foto_ustadz }}" class="card-img-top" alt="{{ u.nama_ustadz }}">
+                    {% else %}
+                    <div class="card-img-top d-flex align-items-center justify-content-center" style="background: #e2f0de;">
+                        <i class="fas fa-user-tie fa-5x text-success opacity-50"></i>
+                    </div>
+                    {% endif %}
+                    <div class="p-4">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <h5 class="fw-bold mb-1">{{ u.nama_ustadz }}</h5>
+                            <span class="badge-spesialis">{{ u.spesialisasi }}</span>
+                        </div>
+                        <p class="small text-muted mt-2"><i class="fas fa-graduation-cap me-1"></i> {{ u.pendidikan }}</p>
+                        <p class="small text-secondary">{{ u.bio[:110] }}...</p>
+                        <hr class="my-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-clock text-success me-1"></i> Respon < 24 jam</span>
+                            <a href="/ustadz/{{ u.id_ustadz }}" class="btn btn-konsultasi text-white px-4"><i class="fas fa-paper-plane me-2"></i>Tanya</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer class="text-center">
+        <div class="container">
+            <i class="fas fa-mosque fs-2 mb-2 text-success"></i>
+            <p class="mb-0 small">Ruang Jemaah — Tempat belajar & konsultasi Islam modern</p>
+        </div>
+    </footer>
+</body>
+</html>

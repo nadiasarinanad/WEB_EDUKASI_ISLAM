@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Ustadz - Ruang Jemaah</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #f4f7fc;
+            font-family: 'Inter', sans-serif;
+        }
+        /* Sidebar premium */
+        .sidebar {
+            background: linear-gradient(180deg, #0f2c0f 0%, #1a3d1a 100%);
+            min-height: 100vh;
+            color: white;
+            padding: 2rem 1rem;
+            box-shadow: 2px 0 12px rgba(0,0,0,0.05);
+        }
+        .sidebar h5 {
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+        .sidebar .nav-link {
+            color: #cfecd0;
+            padding: 0.7rem 1rem;
+            border-radius: 14px;
+            transition: 0.2s;
+            font-weight: 500;
+            text-decoration: none;
+            display: block;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background: rgba(255,255,255,0.12);
+            color: white;
+        }
+        .sidebar .nav-link i { width: 28px; }
+        /* Chat room card */
+        .chat-room-card {
+            background: white;
+            border-radius: 28px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.02);
+            border: 1px solid #e4ede4;
+            transition: all 0.2s;
+        }
+        .chat-room-card:hover {
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+        }
+        .room-header {
+            background: #ffffff;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #eef2ee;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        .room-header:hover {
+            background: #fafefa;
+        }
+        .room-title {
+            font-weight: 600;
+            color: #1e3d1a;
+            font-size: 1.05rem;
+        }
+        .chat-thread {
+            padding: 1.5rem;
+            max-height: 550px;
+            overflow-y: auto;
+            background: #fefef7;
+            display: none;
+            flex-direction: column;
+        }
+        /* Bubble styling: pertanyaan jemaah di kiri, jawaban ustadz di kanan */
+        .message-left {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 1rem;
+        }
+        .message-right {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1rem;
+        }
+        .bubble-left {
+            background: #eef3ea;
+            border-radius: 24px 24px 24px 8px;
+            padding: 0.75rem 1.2rem;
+            max-width: 75%;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            border: 1px solid #e2eede;
+        }
+        .bubble-right {
+            background: #dcf8c5;
+            border-radius: 24px 24px 8px 24px;
+            padding: 0.75rem 1.2rem;
+            max-width: 75%;
+            color: #1e3d1a;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+        .message-meta {
+            font-size: 0.68rem;
+            color: #6f8f6f;
+            margin-top: 0.3rem;
+            display: block;
+        }
+        .answer-form {
+            margin-top: 1rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid #e2ead9;
+        }
+        .btn-delete-room {
+            background: transparent;
+            border: 1px solid #e0cbcb;
+            border-radius: 50px;
+            padding: 0.2rem 1rem;
+            font-size: 0.7rem;
+            color: #b34e4e;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+        .btn-delete-room:hover {
+            background: #b34e4e;
+            color: white;
+            border-color: #b34e4e;
+        }
+        .btn-send {
+            background: #2d6a2d;
+            border: none;
+            border-radius: 60px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            color: white;
+            transition: 0.2s;
+        }
+        .btn-send:hover {
+            background: #1e4a1e;
+            transform: translateY(-1px);
+        }
+        .stats-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1rem 1.2rem;
+            text-align: center;
+            border: 1px solid #e2eade;
+            transition: 0.2s;
+        }
+        .stats-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+        }
+        .top-bar {
+            background: white;
+            border-radius: 28px;
+            padding: 0.8rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            border: 1px solid #eef2ee;
+        }
+        /* Scrollbar custom */
+        .chat-thread::-webkit-scrollbar {
+            width: 5px;
+        }
+        .chat-thread::-webkit-scrollbar-track {
+            background: #e8f0e8;
+            border-radius: 10px;
+        }
+        .chat-thread::-webkit-scrollbar-thumb {
+            background: #bcd8b0;
+            border-radius: 10px;
+        }
+        .answer-form:not(:last-of-type) {
+    display: none;
+}
+    </style>
+</head>
+<body>
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <!-- Sidebar kiri -->
+            <div class="col-md-2 sidebar">
+                <div class="text-center mb-4">
+                    <i class="fas fa-mosque fa-2x mb-2"></i>
+                    <h5 class="fw-bold">Ruang Jemaah</h5>
+                    <p class="small opacity-75">Ustadz Panel</p>
+                </div>
+                <nav class="nav flex-column">
+                    <a href="#" class="nav-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    <a href="#" class="nav-link"><i class="fas fa-users"></i> Jemaah Saya</a>
+                    <a href="/logout_ustadz" class="nav-link text-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </nav>
+            </div>
+
+            <!-- Konten utama -->
+            <div class="col-md-10 p-4">
+                <div class="top-bar d-flex justify-content-between align-items-center flex-wrap">
+                    <div>
+                        <h4 class="fw-bold mb-0"><i class="fas fa-chalkboard-teacher text-success me-2"></i>Selamat datang, {{ ustadz.nama_ustadz }}</h4>
+                        <span class="badge bg-success mt-1">{{ ustadz.spesialisasi }}</span>
+                    </div>
+                    <div><i class="fas fa-calendar-alt text-success me-1"></i> <strong>{{ now }}</strong></div>
+                </div>
+
+                <!-- Statistik -->
+                {% set total_rooms = rooms|length %}
+                {% set total_unanswered = 0 %}
+                {% set total_answered = 0 %}
+                {% set total_messages = 0 %}
+                {% for room in rooms.values() %}
+                    {% for msg in room.messages %}
+                        {% set total_messages = total_messages + 1 %}
+                        {% if msg.jawaban_list|length > 0 %}
+                            {% set total_answered = total_answered + 1 %}
+                        {% else %}
+                            {% set total_unanswered = total_unanswered + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <i class="fas fa-users fa-2x text-success mb-2"></i>
+                            <h3 class="fw-bold">{{ total_rooms }}</h3>
+                            <p class="text-muted small mb-0">Jemaah Aktif</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <i class="fas fa-clock fa-2x text-warning mb-2"></i>
+                            <h3 class="fw-bold">{{ total_unanswered }}</h3>
+                            <p class="text-muted small mb-0">Belum Dijawab</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
+                            <h3 class="fw-bold">{{ total_answered }}</h3>
+                            <p class="text-muted small mb-0">Terjawab</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <i class="fas fa-comments fa-2x text-info mb-2"></i>
+                            <h3 class="fw-bold">{{ total_messages }}</h3>
+                            <p class="text-muted small mb-0">Total Pesan</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daftar room chat per jemaah -->
+                {% if rooms %}
+                    {% for id_jemaah, room in rooms.items() %}
+                    <div class="chat-room-card">
+                        <div class="room-header" onclick="toggleChat(this)">
+                            <div class="room-title">
+                                <i class="fas fa-user-circle me-2 text-success"></i> {{ room.nama_jemaah }}
+                                {% set unread = 0 %}
+                                {% for msg in room.messages %}
+                                    {% if msg.jawaban_list|length == 0 %}{% set unread = unread + 1 %}{% endif %}
+                                {% endfor %}
+                                {% if unread > 0 %}
+                                <span class="badge bg-danger rounded-pill ms-2">{{ unread }} baru</span>
+                                {% endif %}
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="/hapus_konsultasi_ustadz/{{ id_jemaah }}" class="btn-delete-room" onclick="event.stopPropagation(); return confirm('Hapus seluruh riwayat konsultasi dengan {{ room.nama_jemaah }}?')">
+                                    <i class="fas fa-trash-alt me-1"></i> Hapus Room
+                                </a>
+                                <i class="fas fa-chevron-down text-secondary"></i>
+                            </div>
+                        </div>
+                        <div class="chat-thread">
+                            {% for msg in room.messages %}
+                                <!-- Pertanyaan jemaah (kiri) -->
+                                <div class="message-left">
+                                    <div class="bubble-left">
+                                        <strong><i class="fas fa-user me-1"></i> {{ room.nama_jemaah }}:</strong> {{ msg.pertanyaan }}
+                                        <span class="message-meta"><i class="far fa-clock me-1"></i> {{ msg.waktu_kirim.strftime('%d %b %H:%M') if msg.waktu_kirim else '' }}</span>
+                                    </div>
+                                </div>
+                                <!-- Jawaban ustadz (kanan) – untuk setiap jawaban yang pernah diberikan -->
+                                {% if msg.jawaban_list %}
+                                    {% for jawab in msg.jawaban_list %}
+                                    <div class="message-right">
+                                        <div class="bubble-right">
+                                            <strong><i class="fas fa-user-tie me-1"></i> Anda:</strong> {{ jawab.jawaban }}
+                                            <span class="message-meta"><i class="far fa-clock me-1"></i> {{ jawab.created_at.strftime('%d %b %H:%M') if jawab.created_at else '' }}</span>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <!-- Tidak ada jawaban, tidak tampil bubble -->
+                                {% endif %}
+                                <!-- Form jawaban SELALU muncul untuk setiap pertanyaan (agar bisa membalas kapan saja) -->
+                                <div class="answer-form">
+                                    <form action="/balas_konsultasi" method="POST" class="d-flex gap-2">
+                                        <input type="hidden" name="id_konsultasi" value="{{ msg.id_konsultasi }}">
+                                        <input type="hidden" name="id_ustadz" value="{{ ustadz.id_ustadz }}">
+                                        <input type="text" name="jawaban" class="form-control" style="border-radius: 60px;" placeholder="Tulis jawaban... (akan menambah riwayat baru)" required>
+                                        <button type="submit" class="btn btn-send"><i class="fas fa-paper-plane"></i> Kirim</button>
+                                    </form>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-light border p-5 text-center rounded-4">
+                        <i class="fas fa-inbox fa-3x text-secondary mb-3"></i>
+                        <h5>Belum ada pertanyaan dari jemaah</h5>
+                        <p class="text-muted">Santai, nanti akan muncul di sini.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleChat(header) {
+            let body = header.nextElementSibling;
+            if (body.style.display === 'none' || body.style.display === '') {
+                body.style.display = 'block';
+                header.querySelector('.fa-chevron-down').classList.replace('fa-chevron-down','fa-chevron-up');
+            } else {
+                body.style.display = 'none';
+                header.querySelector('.fa-chevron-up').classList.replace('fa-chevron-up','fa-chevron-down');
+            }
+        }
+        document.querySelectorAll('.chat-thread').forEach(el => el.style.display = 'none');
+    </script>
+</body>
+</html>

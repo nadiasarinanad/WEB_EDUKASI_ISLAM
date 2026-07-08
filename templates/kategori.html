@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ kategori.nama_kategori }} - Ruang Jemaah</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #f4f7f4;
+            font-family: 'Poppins', sans-serif;
+        }
+        .navbar-custom {
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 15px 0;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            color: #1e3d1a !important;
+            font-size: 1.5rem;
+        }
+        .hero-category {
+            background: linear-gradient(135deg, #1e3d1a 0%, #3e8035 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .hero-category h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .hero-category p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .article-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .badge-kategori {
+            background: #e8f5e9;
+            color: #2d5a27;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .article-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1e3d1a;
+            margin-bottom: 10px;
+        }
+        .article-title a {
+            color: #1e3d1a;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .article-title a:hover {
+            color: #3e8035;
+        }
+        .article-meta {
+            font-size: 0.8rem;
+            color: #6c8b6c;
+            margin-bottom: 15px;
+        }
+        .article-preview {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .btn-baca {
+            background: #2d6a2d;
+            color: white;
+            border-radius: 50px;
+            padding: 8px 25px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            display: inline-block;
+        }
+        .btn-baca:hover {
+            background: #1e4a1e;
+            color: white;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 20px;
+        }
+        .search-box {
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+        .search-box input {
+            border-radius: 50px;
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+        }
+        .search-box button {
+            border-radius: 50px;
+            padding: 12px 25px;
+            background: #2d6a2d;
+            border: none;
+        }
+        footer {
+            background: #112211;
+            color: #bcd0bc;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        @media (max-width: 768px) {
+            .hero-category h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/beranda">
+                <i class="fas fa-mosque me-2 text-success"></i>Ruang Jemaah
+            </a>
+            
+            <!-- Search Bar -->
+            <form action="/cari" method="GET" class="d-none d-md-flex ms-auto me-3" style="width: 300px;">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Cari artikel..." style="border-radius: 50px 0 0 50px;">
+                    <button class="btn btn-success" type="submit" style="border-radius: 0 50px 50px 0;">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+            
+            <div class="d-flex gap-2">
+                <a href="/ustadz" class="btn btn-outline-success rounded-pill">
+                    <i class="fas fa-comments"></i> Tanya Ustadz
+                </a>
+                <div class="dropdown">
+                    <button class="btn btn-outline-success rounded-pill dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-book"></i> Materi
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/kategori/1"><i class="fas fa-kaaba me-2"></i> Fikih</a></li>
+                        <li><a class="dropdown-item" href="/kategori/2"><i class="fas fa-heart me-2"></i> Akidah Akhlak</a></li>
+                        <li><a class="dropdown-item" href="/kategori/3"><i class="fas fa-book-open me-2"></i> Sejarah (SKI)</a></li>
+                    </ul>
+                </div>
+                <a href="/profil" class="btn btn-success rounded-pill">
+                    <i class="fas fa-user-circle"></i> {{ session['nama'] }}
+                </a>
+                <a href="/logout" class="btn btn-outline-danger rounded-pill">Keluar</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-category">
+        <div class="container">
+            <i class="fas {{ 'fa-kaaba' if kategori.id_kategori == 1 else 'fa-heart' if kategori.id_kategori == 2 else 'fa-book-open' }} fa-3x mb-3"></i>
+            <h1>{{ kategori.nama_kategori }}</h1>
+            <p>Kumpulan lengkap materi {{ kategori.nama_kategori }} untuk pembelajaran Anda</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Search Bar Mobile -->
+        <div class="search-box d-md-none">
+            <form action="/cari" method="GET" class="d-flex gap-2">
+                <input type="text" name="q" class="form-control" placeholder="Cari artikel..." style="border-radius: 50px;">
+                <button type="submit" class="btn btn-success rounded-pill px-4">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- Daftar Artikel -->
+        {% if artikel_list %}
+            {% for artikel in artikel_list %}
+            <div class="article-card">
+                <span class="badge-kategori">
+                    <i class="fas {{ artikel.ikon }} me-1"></i> {{ kategori.nama_kategori }}
+                </span>
+                <h3 class="article-title">
+                    <a href="/baca/{{ artikel.id_artikel }}">{{ artikel.judul_artikel }}</a>
+                </h3>
+                <div class="article-meta">
+                    <i class="far fa-calendar-alt me-1"></i> 
+                    {{ artikel.waktu_publish.strftime('%d %B %Y') if artikel.waktu_publish else 'Terbaru' }}
+                    {% if artikel.sumber %}
+                    | <i class="fas fa-book me-1"></i> {{ artikel.sumber }}
+                    {% endif %}
+                    | <i class="fas fa-eye me-1"></i> {{ artikel.dibaca or 0 }} dibaca
+                </div>
+                <p class="article-preview">{{ artikel.preview|safe }}</p>
+                <a href="/baca/{{ artikel.id_artikel }}" class="btn-baca">
+                    Baca Selengkapnya <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-inbox fa-4x text-muted mb-3 opacity-25"></i>
+                <h4 class="text-muted">Belum ada artikel di kategori {{ kategori.nama_kategori }}</h4>
+                <p class="text-muted">Artikel akan segera ditambahkan. Silakan cek kembali nanti.</p>
+                <a href="/beranda" class="btn btn-success rounded-pill mt-3">
+                    <i class="fas fa-home me-2"></i> Kembali ke Beranda
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <footer>
+        <div class="container">
+            <i class="fas fa-mosque fs-4 mb-2 text-success"></i>
+            <p class="small mb-0">Ruang Jemaah — Platform Edukasi Islam Berbasis AI</p>
+            <p class="small mt-1">© 2026 • Belajar Islam Lebih Menyenangkan</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

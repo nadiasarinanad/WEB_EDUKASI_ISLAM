@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beranda - Ruang Jemaah</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
+            padding-bottom: 50px;
+            overflow-x: hidden;
+        }
+        .navbar-custom {
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 10px 0;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            color: #1e3d1a !important;
+            font-size: 1.3rem;
+        }
+        .navbar-brand i {
+            font-size: 1.2rem;
+        }
+        /* Tombol di navbar biar rapi */
+        .nav-link-custom {
+            font-weight: 500;
+            color: #1e3d1a;
+            padding: 6px 14px;
+            border-radius: 50px;
+            transition: 0.2s;
+        }
+        .nav-link-custom:hover {
+            background: #e8f5e9;
+        }
+        .btn-nav {
+            border-radius: 50px;
+            padding: 6px 18px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        /* Hero */
+        .hero-section {
+            background: linear-gradient(135deg, #1e3d1a 0%, #3e8035 100%);
+            border-radius: 20px;
+            color: white;
+            padding: 30px 25px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(45, 90, 39, 0.2);
+        }
+        .hero-title {
+            font-weight: 700;
+            font-size: 1.6rem;
+            margin-bottom: 5px;
+        }
+        .hero-sub {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        /* Search bar mobile - di atas rekomendasi */
+        .search-mobile {
+            margin-bottom: 25px;
+        }
+        .search-mobile input {
+            border-radius: 50px;
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+        }
+        .search-mobile button {
+            border-radius: 50px;
+            padding: 12px 25px;
+            background: #2d6a2d;
+            border: none;
+            color: white;
+            font-weight: 500;
+        }
+        /* Section title */
+        .section-title {
+            font-weight: 700;
+            color: #1e3d1a;
+            margin-bottom: 8px;
+            font-size: 1.4rem;
+            border-left: 5px solid #3e8035;
+            padding-left: 15px;
+        }
+        .section-desc {
+            color: #6c8b6c;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+        /* Article card */
+        .article-card {
+            background: white;
+            border-radius: 15px;
+            border: none;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            height: 100%;
+        }
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .article-img {
+            height: 180px;
+            object-fit: cover;
+            width: 100%;
+            background-color: #e0e0e0;
+        }
+        .badge-kategori {
+            background-color: #e8f5e9;
+            color: #2d5a27;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .article-title {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .article-desc {
+            font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    line-clamp: 3; /* <-- TAMBAHKAN INI */
+    overflow: hidden;
+}
+        .btn-baca {
+            color: #2d5a27;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .btn-baca:hover {
+            color: #1e3d1a;
+            letter-spacing: 0.5px;
+        }
+        /* Responsif tambahan */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 1.3rem;
+            }
+            .hero-section {
+                padding: 20px 18px;
+            }
+            .navbar-brand {
+                font-size: 1.1rem;
+            }
+            .btn-nav {
+                padding: 4px 12px;
+                font-size: 0.8rem;
+            }
+            .section-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="/beranda">
+            <i class="fas fa-mosque me-2 text-success"></i>Ruang Jemaah
+        </a>
+
+        <!-- Tombol hamburger untuk HP -->
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-1 gap-lg-2 mt-2 mt-lg-0">
+                <!-- Search Desktop (di navbar) -->
+                <li class="nav-item d-none d-lg-block">
+                    <form action="/cari" method="GET" class="d-flex" style="width: 220px;">
+                        <input type="text" name="q" class="form-control" placeholder="Cari artikel..." style="border-radius: 50px 0 0 50px; font-size:0.85rem;">
+                        <button class="btn btn-success" type="submit" style="border-radius: 0 50px 50px 0;"><i class="fas fa-search"></i></button>
+                    </form>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link nav-link-custom dropdown-toggle" href="#" id="materiDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-book"></i> Materi
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="materiDropdown">
+                        <li><a class="dropdown-item" href="/kategori/1"><i class="fas fa-kaaba me-2"></i> Fikih</a></li>
+                        <li><a class="dropdown-item" href="/kategori/2"><i class="fas fa-heart me-2"></i> Akidah Akhlak</a></li>
+                        <li><a class="dropdown-item" href="/kategori/3"><i class="fas fa-book-open me-2"></i> Sejarah (SKI)</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="/ustadz" class="nav-link nav-link-custom"><i class="fas fa-comments"></i> Tanya Ustadz</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/profil" class="nav-link nav-link-custom"><i class="fas fa-user-circle me-1"></i> {{ session['nama'] }}</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/logout" class="btn btn-outline-danger btn-nav">Keluar</a>
+                </li>
+                <!-- Search Mobile (di bawah navbar, muncul saat menu dibuka) -->
+                <li class="nav-item d-lg-none w-100 mt-2">
+                    <form action="/cari" method="GET" class="d-flex">
+                        <input type="text" name="q" class="form-control" placeholder="Cari artikel..." style="border-radius: 50px 0 0 50px;">
+                        <button class="btn btn-success" type="submit" style="border-radius: 0 50px 50px 0;"><i class="fas fa-search"></i></button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- ===== KONTEN UTAMA ===== -->
+<div class="container">
+
+    <!-- HERO -->
+    <div class="hero-section d-flex justify-content-between align-items-center flex-wrap">
+        <div>
+            <h1 class="hero-title">Ahlan wa Sahlan, {{ session['nama'] }}! ✨</h1>
+            <p class="hero-sub mb-0">Mari tingkatkan pemahaman agama kita hari ini.</p>
+        </div>
+        <div class="mt-2 mt-md-0 d-none d-sm-block">
+            <i class="fas fa-book-open" style="font-size: 3.5rem; opacity: 0.2;"></i>
+        </div>
+    </div>
+
+    <!-- SEARCH BAR MOBILE (di luar navbar, muncul di atas konten) -->
+    <div class="search-mobile d-lg-none">
+        <form action="/cari" method="GET" class="d-flex gap-2">
+            <input type="text" name="q" class="form-control" placeholder="Cari artikel...">
+            <button type="submit"><i class="fas fa-search me-1"></i> Cari</button>
+        </form>
+    </div>
+
+    <!-- REKOMENDASI UNTUKMU -->
+    <h3 class="section-title mt-4">Rekomendasi Untukmu</h3>
+    <p class="section-desc">Dipilih khusus berdasarkan minat dan aktivitas belajarmu.</p>
+
+    <div class="row g-4 mb-5">
+        {% for artikel in rekomendasi_cf %}
+        <div class="col-12 col-md-4">
+            <div class="article-card">
+                <img src="{{ artikel.link_gambar or 'https://via.placeholder.com/300x180/1e3d1a/ffffff?text=Islam' }}" class="article-img" alt="{{ artikel.judul_artikel }}">
+                <div class="p-3">
+                    <span class="badge-kategori"><i class="fas {{ artikel.ikon }} me-1"></i> {{ artikel.nama_kategori }}</span>
+                    <h4 class="article-title">{{ artikel.judul_artikel }}</h4>
+                    <p class="article-desc">{{ artikel.deskripsi_singkat }}</p>
+                    <a href="/baca/{{ artikel.id_artikel }}" class="btn-baca">Baca Selengkapnya <i class="fas fa-arrow-right ms-1"></i></a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-success text-center">Belum ada rekomendasi khusus untukmu. Yuk mulai baca artikel di bawah!</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- PILIHAN POPULER -->
+    <h3 class="section-title mt-5">Pilihan Populer</h3>
+    <p class="section-desc">Materi yang sedang banyak dipelajari minggu ini.</p>
+
+    <div class="row g-4 mb-5">
+        {% for artikel in artikel_populer %}
+        <div class="col-12 col-md-4">
+            <div class="article-card">
+                <img src="{{ artikel.link_gambar or 'https://via.placeholder.com/300x180/1e3d1a/ffffff?text=Islam' }}" class="article-img" alt="{{ artikel.judul_artikel }}">
+                <div class="p-3">
+                    <span class="badge-kategori"><i class="fas {{ artikel.ikon }} me-1"></i> {{ artikel.nama_kategori }}</span>
+                    <h4 class="article-title">{{ artikel.judul_artikel }}</h4>
+                    <p class="article-desc">{{ artikel.deskripsi_singkat }}</p>
+                    <a href="/baca/{{ artikel.id_artikel }}" class="btn-baca">Baca Selengkapnya <i class="fas fa-arrow-right ms-1"></i></a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Saya - Ruang Jemaah</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: #f4f7fc; font-family: 'Inter', sans-serif; }
+        .profile-sidebar { background: white; border-radius: 28px; padding: 28px; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,0.02); border: 1px solid #eef2f6; }
+        .profile-avatar { width: 140px; height: 140px; object-fit: cover; border-radius: 50%; border: 4px solid #2d6a2d; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .avatar-placeholder { width: 140px; height: 140px; background: #e8f5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: #2d6a2d; border: 4px solid #2d6a2d; margin: 0 auto; }
+        .camera-icon { background: #2d6a2d; width: 40px; height: 40px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: white; cursor: pointer; margin-top: -20px; border: 2px solid white; transition: 0.2s; }
+        .camera-icon:hover { background: #1e4a1e; transform: scale(1.05); }
+        .stat-card { background: white; border-radius: 24px; padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.02); border: 1px solid #eef2f6; transition: 0.2s; }
+        .stat-card:hover { transform: translateY(-3px); }
+        
+        /* ========== CSS TAMBAHAN UNTUK TABEL RIWAYAT ========== */
+        .riwayat-card {
+            background: white;
+            border-radius: 24px;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            transition: transform 0.2s, box-shadow 0.2s;
+            overflow: hidden;
+        }
+        .riwayat-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        .riwayat-header {
+            background: white;
+            border-bottom: 1px solid #eef2ee;
+            padding: 20px 24px 12px 24px;
+        }
+        .riwayat-body {
+            padding: 0 24px 24px 24px;
+        }
+        .table-riwayat th {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #2d5a27;
+            border-bottom-width: 1px;
+            padding: 12px 8px;
+        }
+        .table-riwayat td {
+            vertical-align: middle;
+            font-size: 0.9rem;
+            padding: 14px 8px;
+        }
+        .table-riwayat tr:hover {
+            background-color: #f8fbf8;
+        }
+        .badge-rating {
+            background: #fef3c7;
+            color: #b45309;
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+        .badge-unrated {
+            background: #f0f2f0;
+            color: #6c8b6c;
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+        }
+        .badge-baca {
+            background: #e8f5e9;
+            color: #2d6a2d;
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-weight: 500;
+            font-size: 0.75rem;
+        }
+        .link-artikel {
+            text-decoration: none;
+            font-weight: 600;
+            color: #2d6a2d;
+            transition: 0.2s;
+        }
+        .link-artikel:hover {
+            color: #1e4a1e;
+            text-decoration: underline;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .btn-delete-room {
+    background: transparent;
+    border: 1px solid #e0cbcb;
+    border-radius: 50px;
+    padding: 0.2rem 1rem;
+    font-size: 0.7rem;
+    color: #b34e4e;
+    transition: 0.2s;
+    text-decoration: none;
+}
+.btn-delete-room:hover {
+    background: #b34e4e;
+    color: white;
+    border-color: #b34e4e;
+}
+        /* ================================================== */
+        
+        .chat-room-card { background: white; border-radius: 24px; margin-bottom: 24px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        
+        .room-header { padding: 16px 24px; background: #fff; border-bottom: 1px solid #eef2ee; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .chat-body { padding: 20px 24px; max-height: 500px; overflow-y: auto; background: #fefef8; display: none; flex-direction: column; }
+        .message-right { display: flex; justify-content: flex-end; margin-bottom: 16px; }
+        .message-left { display: flex; justify-content: flex-start; margin-bottom: 16px; }
+        .bubble-right { background: #dcf8c5; border-radius: 20px 20px 8px 20px; padding: 10px 16px; max-width: 75%; }
+        .bubble-left { background: white; border-radius: 20px 20px 20px 8px; padding: 10px 16px; max-width: 75%; border: 1px solid #e2e8e2; }
+        .bubble-name { font-weight: 600; font-size: 0.8rem; margin-bottom: 4px; }
+        .bubble-time { font-size: 0.7rem; color: #6c757d; margin-top: 6px; display: block; }
+        .btn-send { background: #2d6a2d; border: none; border-radius: 40px; padding: 8px 20px; color: white; }
+        .btn-edit { background: #eef2ee; border: none; border-radius: 40px; padding: 8px 20px; font-weight: 500; }
+        footer { background: #112211; color: #bcd0bc; padding: 2rem 0; margin-top: 3rem; text-align: center; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-light bg-white shadow-sm p-3">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-success" href="/beranda">
+            <i class="fas fa-mosque me-2"></i>Ruang Jemaah
+        </a>
+        
+        <!-- Search Bar -->
+        <form action="/cari" method="GET" class="d-none d-md-flex ms-auto me-3" style="width: 280px;">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Cari artikel..." style="border-radius: 50px 0 0 50px;">
+                <button class="btn btn-success" type="submit" style="border-radius: 0 50px 50px 0;">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </form>
+        
+        <div class="d-flex gap-2">
+            <div class="dropdown">
+                <button class="btn btn-outline-success rounded-pill dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <i class="fas fa-book"></i> Materi
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/kategori/1"><i class="fas fa-kaaba me-2"></i> Fikih</a></li>
+                    <li><a class="dropdown-item" href="/kategori/2"><i class="fas fa-heart me-2"></i> Akidah Akhlak</a></li>
+                    <li><a class="dropdown-item" href="/kategori/3"><i class="fas fa-book-open me-2"></i> Sejarah (SKI)</a></li>
+                </ul>
+            </div>
+            <a href="/beranda" class="btn btn-outline-success rounded-pill">Beranda</a>
+        </div>
+    </div>
+</nav>
+
+    <div class="container mt-4 mb-5">
+        <div class="row g-4">
+            <!-- Kolom kiri: Profil -->
+            <div class="col-lg-4">
+                <div class="profile-sidebar">
+                    <div class="position-relative d-inline-block">
+                        {% if user.foto_profil and user.foto_profil.startswith('data:') %}
+                            <img src="{{ user.foto_profil }}" class="profile-avatar" id="profileImage" alt="Foto Profil">
+                        {% else %}
+                            <div class="avatar-placeholder" id="profileImage">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                        {% endif %}
+                        <div class="camera-icon" id="cameraBtn"><i class="fas fa-camera"></i></div>
+                    </div>
+                    <h3 class="fw-bold mt-3">{{ user.nama_lengkap }}</h3>
+                    <p class="text-muted"><i class="fas fa-envelope me-1"></i> {{ user.email }}</p>
+                    <div class="d-flex justify-content-center gap-2 mb-3">
+                        <span class="badge bg-success rounded-pill px-3">Terverifikasi</span>
+                        <span class="badge bg-light text-dark rounded-pill px-3">Member Aktif</span>
+                    </div>
+                    {% if user.bio %}
+                        <p class="text-secondary small"><i class="fas fa-quote-left me-1 text-success"></i> {{ user.bio }}</p>
+                    {% endif %}
+                    <hr>
+                    <div class="text-start small">
+                        <p><i class="fas fa-phone-alt text-success me-2"></i> {{ user.no_telepon or 'Belum diisi' }}</p>
+                        <p><i class="fas fa-calendar-alt text-success me-2"></i> Bergabung: {{ user.tanggal_daftar.strftime('%d %b %Y') if user.tanggal_daftar else '-' }}</p>
+                    </div>
+                    <button class="btn btn-edit w-100 mt-2" data-bs-toggle="modal" data-bs-target="#editProfilModal"><i class="fas fa-edit me-2"></i>Edit Profil</button>
+                    {% if user.foto_profil %}
+                        <a href="/hapus_foto" class="btn btn-outline-danger w-100 mt-2" onclick="return confirm('Hapus foto profil?')"><i class="fas fa-trash-alt me-2"></i>Hapus Foto</a>
+                    {% endif %}
+                    <form id="uploadForm" action="/upload_foto" method="POST" enctype="multipart/form-data" style="display:none;">
+                        <input type="file" name="foto" id="fotoInput" accept="image/*">
+                    </form>
+                </div>
+            </div>
+
+            <!-- Kolom kanan: Statistik, Riwayat & Konsultasi -->
+            <div class="col-lg-8">
+                <!-- STATISTIK CARD -->
+                {% set total_artikel = riwayat|length %}
+                {% set total_klik = riwayat|sum(attribute='jumlah_klik') %}
+                {% set rated_items = riwayat|selectattr('rating', 'greaterthan', 0)|list %}
+                {% set avg_rating = (rated_items|sum(attribute='rating') / rated_items|length)|round(1) if rated_items|length > 0 else 0 %}
+                
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <i class="fas fa-book-open fa-2x text-success mb-2"></i>
+                            <h3 class="fw-bold">{{ total_artikel }}</h3>
+                            <p class="text-muted small mb-0">Total Artikel Dibaca</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <i class="fas fa-chart-line fa-2x text-success mb-2"></i>
+                            <h3 class="fw-bold">{{ total_klik }}</h3>
+                            <p class="text-muted small mb-0">Total Kali Membaca</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <i class="fas fa-star fa-2x text-warning mb-2"></i>
+                            <h3 class="fw-bold">{{ avg_rating }}</h3>
+                            <p class="text-muted small mb-0">Rata-rata Rating</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIWAYAT BACA - CARD RAPI -->
+                <div class="riwayat-card">
+                    <div class="riwayat-header">
+                        <h4 class="fw-bold mb-0">
+                            <i class="fas fa-history text-success me-2"></i>Riwayat Baca
+                        </h4>
+                        <p class="text-muted small mt-2 mb-0">Artikel yang pernah Anda baca</p>
+                    </div>
+                    <div class="riwayat-body">
+                        {% if riwayat %}
+                        <div class="table-responsive">
+                            <table class="table table-riwayat">
+                                <thead>
+                                    <tr>
+                                        <th>Judul Artikel</th>
+                                        <th class="text-center">Rating</th>
+                                        <th class="text-center">Dibaca</th>
+                                        <th>Terakhir Dibaca</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for r in riwayat %}
+                                    <tr>
+                                        <td>
+                                            <a href="/baca/{{ r.id_artikel }}" class="link-artikel">
+                                                <i class="fas fa-book-open me-2"></i>{{ r.judul_artikel }}
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
+                                            {% if r.rating > 0 %}
+                                                <span class="badge-rating">
+                                                    <i class="fas fa-star me-1"></i> {{ r.rating }}/5
+                                                </span>
+                                            {% else %}
+                                                <span class="badge-unrated">
+                                                    <i class="far fa-star me-1"></i> Belum rating
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge-baca">
+                                                <i class="fas fa-eye me-1"></i> {{ r.jumlah_klik }}x
+                                            </span>
+                                        </td>
+                                        <td class="text-muted small">
+                                            <i class="far fa-calendar-alt me-1"></i> 
+                                            {{ r.waktu_baca.strftime('%d %b %Y %H:%M') if r.waktu_baca else '-' }}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-book-open fa-4x text-muted mb-3 opacity-25"></i>
+                            <h5 class="text-muted">Belum ada riwayat baca</h5>
+                            <p class="small text-muted">Yuk baca artikel terlebih dahulu</p>
+                            <a href="/beranda" class="btn btn-outline-success rounded-pill mt-2 px-4">
+                                <i class="fas fa-arrow-right me-2"></i>Mulai Membaca
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- RUANG KONSULTASI -->
+<h4 class="fw-bold mb-3 mt-5">
+    <i class="fas fa-comments text-success me-2"></i>Ruang Konsultasi
+</h4>
+{% if rooms %}
+    {% for id_ustadz, room in rooms.items() %}
+    <div class="chat-room-card">
+        <div class="room-header" onclick="toggleChat(this)">
+            <div>
+                <i class="fas fa-chalkboard-teacher text-success me-2"></i>
+                <strong>{{ room.nama_ustadz }}</strong>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="/hapus_room/{{ id_ustadz }}" 
+                   class="btn-delete-room" 
+                   onclick="event.stopPropagation(); return confirm('Hapus seluruh riwayat konsultasi dengan {{ room.nama_ustadz }}?')">
+                    <i class="fas fa-trash-alt me-1"></i> Hapus
+                </a>
+                <i class="fas fa-chevron-down text-secondary" style="cursor: pointer;"></i>
+            </div>
+        </div>
+        <div class="chat-body" style="display: none;">
+            {% for msg in room.messages %}
+                <!-- Pertanyaan dari jemaah (kanan) -->
+                <div class="message-right">
+                    <div class="bubble-right">
+                        <div class="bubble-name"><i class="fas fa-user me-1"></i> Saya</div>
+                        {{ msg.pertanyaan }}
+                        <span class="bubble-time">
+                            {{ msg.waktu_kirim.strftime('%d %b %Y, %H:%M') if msg.waktu_kirim else '' }}
+                        </span>
+                    </div>
+                </div>
+                <!-- Jawaban ustadz (kiri) -->
+                {% if msg.jawaban_list|length > 0 %}
+                    {% for jawab in msg.jawaban_list %}
+                    <div class="message-left">
+                        <div class="bubble-left">
+                            <div class="bubble-name"><i class="fas fa-user-tie me-1"></i> {{ room.nama_ustadz }}</div>
+                            {{ jawab.jawaban }}
+                            <span class="bubble-time">
+                                {{ jawab.created_at.strftime('%d %b %Y, %H:%M') if jawab.created_at else '' }}
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="message-left">
+                        <div class="bubble-left text-muted">
+                            <em>Belum ada balasan dari ustadz</em>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <!-- Form tanya lanjutan -->
+            <div class="send-form mt-3">
+                <form action="/kirim_pertanyaan_lanjutan" method="POST">
+                    <input type="hidden" name="id_ustadz" value="{{ id_ustadz }}">
+                    <div class="d-flex gap-2">
+                        <input type="text" name="pertanyaan" class="form-control" placeholder="✍️ Tanyakan hal lain...">
+                        <button type="submit" class="btn btn-send"><i class="fas fa-paper-plane"></i> Kirim</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="alert alert-info text-center p-5 rounded-4">
+        <i class="fas fa-inbox fa-3x mb-3 text-secondary"></i>
+        <h5>Belum ada konsultasi</h5>
+        <a href="/ustadz" class="btn btn-outline-success mt-2">Mulai Konsultasi</a>
+    </div>
+{% endif %}
+
+    <!-- Modal Edit Profil -->
+    <div class="modal fade" id="editProfilModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4">
+                <div class="modal-header border-0"><h5 class="fw-bold">Edit Profil</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <form action="/edit_profil" method="POST">
+                    <div class="modal-body">
+                        <div class="mb-3"><label class="form-label fw-semibold">Bio</label><textarea name="bio" class="form-control" rows="3" placeholder="Tulis tentang dirimu...">{{ user.bio or '' }}</textarea></div>
+                        <div class="mb-3"><label class="form-label fw-semibold">Nomor Telepon</label><input type="tel" name="no_telepon" class="form-control" value="{{ user.no_telepon or '' }}" placeholder="+62xxx"></div>
+                    </div>
+                    <div class="modal-footer border-0"><button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Batal</button><button type="submit" class="btn btn-success rounded-pill px-4">Simpan Perubahan</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer><div class="container"><i class="fas fa-mosque fs-4 mb-2 text-success"></i><p class="small mb-0">Ruang Jemaah — Platform Edukasi Islam Modern</p></div></footer>
+
+    <script>
+        function toggleChat(header) {
+            let body = header.nextElementSibling;
+            if (body.style.display === 'none' || body.style.display === '') {
+                body.style.display = 'flex';
+                header.querySelector('.fa-chevron-down').classList.replace('fa-chevron-down','fa-chevron-up');
+            } else {
+                body.style.display = 'none';
+                header.querySelector('.fa-chevron-up').classList.replace('fa-chevron-up','fa-chevron-down');
+            }
+        }
+        document.querySelectorAll('.chat-body').forEach(el => el.style.display = 'none');
+
+        const cameraBtn = document.getElementById('cameraBtn');
+        const fotoInput = document.getElementById('fotoInput');
+        const uploadForm = document.getElementById('uploadForm');
+        const profileImage = document.getElementById('profileImage');
+
+        cameraBtn.addEventListener('click', () => fotoInput.click());
+        fotoInput.addEventListener('change', function() {
+            if (fotoInput.files && fotoInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    if (profileImage.tagName === 'IMG') {
+                        profileImage.src = e.target.result;
+                    } else {
+                        const newImg = document.createElement('img');
+                        newImg.src = e.target.result;
+                        newImg.className = 'profile-avatar';
+                        newImg.id = 'profileImage';
+                        profileImage.parentNode.replaceChild(newImg, profileImage);
+                    }
+                };
+                reader.readAsDataURL(fotoInput.files[0]);
+                uploadForm.submit();
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

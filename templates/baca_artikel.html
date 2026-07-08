@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ artikel.judul_artikel }} - Ruang Jemaah</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts: Poppins + Lora -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #f9fbf9;
+            font-family: 'Poppins', sans-serif;
+            color: #1a2e1a;
+        }
+        /* Navbar sederhana */
+        .navbar-custom {
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+            padding: 1rem 0;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            color: #1e3d1a !important;
+            font-size: 1.4rem;
+        }
+        .btn-back {
+            background: #eef5ee;
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            text-decoration: none;
+            color: #1e3d1a;
+            border: 1px solid #cde0cd;
+        }
+        .btn-back:hover {
+            background: #1e3d1a;
+            color: white;
+            border-color: #1e3d1a;
+        }
+        /* Hero artikel */
+        .article-hero {
+            background: linear-gradient(105deg, #ffffff 0%, #f0f8ee 100%);
+            padding: 2rem 0 1rem 0;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #e0f0de;
+        }
+        .article-header {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .article-category {
+            display: inline-block;
+            background: #e8f5e9;
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #2c6e2c;
+            margin-bottom: 1rem;
+        }
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a3a1a;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+        }
+        .article-meta {
+            color: #6c8b6c;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            border-top: 1px solid #e0f0de;
+            border-bottom: 1px solid #e0f0de;
+            padding: 0.7rem 0;
+            display: inline-flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        /* Konten utama */
+        .article-content-wrapper {
+            max-width: 880px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.03);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+        }
+        .featured-image {
+            width: 100%;
+            max-height: 420px;
+            object-fit: cover;
+            border-radius: 24px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        
+        /* ========== PERBAIKAN JARAK PARAGRAF ========== */
+        .article-body {
+            font-family: 'Lora', serif;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #2a3e2a;
+        }
+        
+        /* Jarak antar paragraf - DIPERPENDEK */
+        .article-body p {
+            margin: 0 0 12px 0;
+        }
+        
+        /* Jarak antar heading */
+        .article-body h1, .article-body h2, .article-body h3, .article-body h4 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+        }
+        .article-body h1 { font-size: 1.8rem; }
+        .article-body h2 { font-size: 1.5rem; }
+        .article-body h3 { font-size: 1.3rem; }
+        .article-body h4 { font-size: 1.1rem; }
+        
+        /* Jarak antar list */
+        .article-body ul, .article-body ol {
+            margin: 5px 0 12px 20px;
+            padding: 0;
+        }
+        .article-body li {
+            margin-bottom: 5px;
+        }
+        
+        /* Jarak antar blockquote (dalil) */
+        .article-body blockquote {
+            margin: 12px 0;
+            padding: 10px 15px;
+            background: #f5f9f5;
+            border-left: 4px solid #2d6a2d;
+            font-style: italic;
+        }
+        
+        /* Jarak untuk garis pemisah (---) */
+        .article-body hr {
+            margin: 15px 0;
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, #c8e6c9, transparent);
+        }
+        
+        /* Jarak untuk tabel (jika ada) */
+        .article-body table {
+            margin: 15px 0;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .article-body th, .article-body td {
+            border: 1px solid #c8e6c9;
+            padding: 8px 10px;
+            text-align: left;
+        }
+        .article-body th {
+            background: #e8f5e9;
+        }
+        
+        /* Jarak untuk elemen lain */
+        .article-body pre, .article-body code {
+            margin: 10px 0;
+        }
+        .article-body div {
+            margin: 5px 0;
+        }
+        /* ========== AKHIR PERBAIKAN ========== */
+        
+        .article-body img {
+            max-width: 100%;
+            border-radius: 20px;
+            margin: 1.5rem 0;
+        }
+        /* Rating section */
+        .rating-section {
+            background: linear-gradient(120deg, #f4fbf2, #eaf6e8);
+            border-radius: 28px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .star-rating {
+            font-size: 2rem;
+            letter-spacing: 8px;
+            color: #ddd;
+            cursor: pointer;
+        }
+        .star-rating .selected, .star-rating .fa-star:hover {
+            color: #f7b731;
+            text-shadow: 0 0 3px rgba(247,183,49,0.5);
+        }
+        /* Side rekomendasi (jika ada) */
+        .suggestions-side {
+            background: white;
+            border-radius: 24px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+            margin-bottom: 2rem;
+            border: 1px solid #e2f0e0;
+        }
+        .suggestions-side h5 {
+            font-weight: 700;
+            border-left: 4px solid #2d6a2d;
+            padding-left: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+        .suggestion-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed #e0efde;
+            text-decoration: none;
+            color: inherit;
+            transition: 0.2s;
+        }
+        .suggestion-item:hover {
+            transform: translateX(5px);
+            color: #2d6a2d;
+        }
+        /* Footer */
+        footer {
+            background: #112211;
+            color: #bcd0bc;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        @media (max-width: 768px) {
+            .article-content-wrapper {
+                padding: 1rem;
+            }
+            .article-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/beranda">
+                <i class="fas fa-mosque me-2 text-success"></i>Ruang Jemaah
+            </a>
+            
+            <!-- Search Bar -->
+            <form action="/cari" method="GET" class="d-none d-md-flex ms-auto me-3" style="width: 280px;">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Cari artikel..." style="border-radius: 50px 0 0 50px;">
+                    <button class="btn btn-success" type="submit" style="border-radius: 0 50px 50px 0;">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+            
+            <div class="d-flex gap-2">
+                <div class="dropdown">
+                    <button class="btn btn-outline-success rounded-pill dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-book"></i> Materi
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/kategori/1"><i class="fas fa-kaaba me-2"></i> Fikih</a></li>
+                        <li><a class="dropdown-item" href="/kategori/2"><i class="fas fa-heart me-2"></i> Akidah Akhlak</a></li>
+                        <li><a class="dropdown-item" href="/kategori/3"><i class="fas fa-book-open me-2"></i> Sejarah (SKI)</a></li>
+                    </ul>
+                </div>
+                <a href="/profil" class="btn btn-success rounded-pill">
+                    <i class="fas fa-user-circle me-1"></i> Profil
+                </a>
+                <a href="/logout" class="btn btn-outline-danger rounded-pill">Keluar</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero artikel -->
+    <div class="article-hero">
+        <div class="container">
+            <div class="article-header">
+                <span class="article-category">
+                    <i class="fas {{ 'fa-kaaba' if artikel.id_kategori == 1 else 'fa-heart' if artikel.id_kategori == 2 else 'fa-book-open' }} me-1"></i>
+                    {% if artikel.id_kategori == 1 %} Fikih 
+                    {% elif artikel.id_kategori == 2 %} Akidah Akhlak
+                    {% else %} Sejarah (SKI) {% endif %}
+                </span>
+                <h1 class="article-title">{{ artikel.judul_artikel }}</h1>
+                <div class="article-meta">
+                    <span><i class="far fa-calendar-alt me-1"></i> {{ artikel.waktu_publish.strftime('%d %B %Y') if artikel.waktu_publish else 'Terbit baru' }}</span>
+                    <span><i class="fas fa-book-open me-1"></i> Sumber: {{ artikel.sumber if artikel.sumber else 'Ruang Jemaah' }}</span>
+                    <span><i class="fas fa-chart-line me-1"></i> Estimasi baca 5 menit</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <!-- Area konten utama -->
+            <div class="col-lg-8 mx-auto">
+                <div class="article-content-wrapper">
+                    <!-- Gambar unggulan jika ada -->
+                    {% if artikel.link_gambar and artikel.link_gambar != '' %}
+                    <img src="{{ artikel.link_gambar }}" class="featured-image" alt="{{ artikel.judul_artikel }}">
+                    {% else %}
+                    <div class="featured-image bg-light d-flex align-items-center justify-content-center" style="height: 260px; background: #eef5ee;">
+                        <i class="fas fa-mosque fa-4x text-success opacity-25"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Isi artikel (aman) -->
+                    <div class="article-body">
+                        {{ artikel.isi_materi | safe }}
+                    </div>
+
+                    <!-- Rating interaktif -->
+                    <div class="rating-section">
+                        <h5 class="fw-bold mb-2"><i class="fas fa-star text-warning me-2"></i> Seberapa bermanfaat artikel ini?</h5>
+                        <p class="text-muted small">Ratingmu membantu rekomendasi yang lebih baik ✨</p>
+                        <form action="/submit_rating" method="POST" id="ratingForm">
+                            <input type="hidden" name="id_artikel" value="{{ artikel.id_artikel }}">
+                            <input type="hidden" name="rating" id="ratingValue" value="{{ user_rating.rating if user_rating else 0 }}">
+                            <div class="star-rating" id="starContainer">
+                                {% for i in range(1, 6) %}
+                                <i class="fas fa-star star-btn" data-value="{{ i }}"></i>
+                                {% endfor %}
+                            </div>
+                            <button type="submit" class="btn btn-success rounded-pill mt-3 px-4 py-2 shadow-sm">Kirim Rating <i class="fas fa-paper-plane ms-1"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar kanan: rekomendasi artikel terkait -->
+            <div class="col-lg-4 d-none d-lg-block">
+                <div class="suggestions-side sticky-top" style="top: 20px;">
+                    <h5><i class="fas fa-lightbulb text-success me-2"></i> Artikel Rekomendasi</h5>
+                    <p class="small text-muted">Kolega jemaah lain juga membaca ini:</p>
+                    {% if artikel_rekomendasi %}
+                        {% for rec in artikel_rekomendasi %}
+                        <a href="/baca/{{ rec.id_artikel }}" class="suggestion-item">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-newspaper text-success mt-1"></i>
+                            </div>
+                            <div>
+                                <strong>{{ rec.judul_artikel }}</strong><br>
+                                <small class="text-muted">{{ rec.nama_kategori if rec.nama_kategori else 'Materi Islami' }}</small>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    {% else %}
+                        {% if artikel_rekomendasi %}
+                            {% for pop in artikel_populer[:3] %}
+                            <a href="/baca/{{ pop.id_artikel }}" class="suggestion-item">
+                                <div><i class="fas fa-chart-line text-success"></i></div>
+                                <div><strong>{{ pop.judul_artikel }}</strong><br><small>Topik populer</small></div>
+                            </a>
+                            {% endfor %}
+                        {% else %}
+                            <div class="text-muted small">Baca artikel lain untuk rekomendasi personal.</div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <i class="fas fa-mosque fs-4 mb-2 text-success"></i>
+            <p class="small mb-0">Ruang Jemaah — Platform Edukasi Islam Berbasis AI</p>
+            <p class="small mt-1">© 2026 • Belajar Islam Lebih Menyenangkan</p>
+        </div>
+    </footer>
+
+    <script>
+        const stars = document.querySelectorAll('.star-btn');
+        const ratingInput = document.getElementById('ratingValue');
+        let currentRating = parseInt(ratingInput.value) || 0;
+
+        function updateStars(val) {
+            stars.forEach(star => {
+                if(parseInt(star.dataset.value) <= val) {
+                    star.classList.add('selected');
+                } else {
+                    star.classList.remove('selected');
+                }
+            });
+        }
+
+        updateStars(currentRating);
+
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                currentRating = parseInt(star.dataset.value);
+                ratingInput.value = currentRating;
+                updateStars(currentRating);
+            });
+            star.addEventListener('mouseover', () => updateStars(parseInt(star.dataset.value)));
+            star.addEventListener('mouseout', () => updateStars(currentRating));
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
